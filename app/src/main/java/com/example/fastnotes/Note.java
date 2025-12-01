@@ -1,18 +1,18 @@
 package com.example.fastnotes;
 
 public class Note {
-    private long id;
+    private long id; // homework 14
     private String title;
     private String content;
 
-    public Note() {}
+    public Note(String перваяЗаметка, String содержаниеПервойЗаметки) {}
 
     public Note(long id, String title, String content) {
-        this.id = id;
+        this.id = id;// homework 14
         this.title = title;
         this.content = content;
     }
-
+    // homework 14
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
 
