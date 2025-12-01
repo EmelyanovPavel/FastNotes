@@ -2,26 +2,25 @@ package com.example.fastnotes;
 
 import android.graphics.Rect;
 import android.view.View;
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class SpacingItemDecorator extends RecyclerView.ItemDecoration {
-    private final int spacing;
+    private int space;
 
-    public SpacingItemDecorator(int spacing) {
-        this.spacing = spacing;
+    public SpacingItemDecorator(int space) {
+        this.space = space;
     }
 
     @Override
-    public void getItemOffsets(@NonNull Rect outRect, @NonNull View view,
-                               @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-        outRect.left = spacing;
-        outRect.right = spacing;
-        outRect.bottom = spacing;
+    public void getItemOffsets(Rect outRect, View view,
+                               RecyclerView parent, RecyclerView.State state) {
+        outRect.left = space;
+        outRect.right = space;
+        outRect.bottom = space;
 
         // Добавляем отступ сверху только для первого элемента
-        if (parent.getChildAdapterPosition(view) == 0) {
-            outRect.top = spacing;
+        if (parent.getChildLayoutPosition(view) == 0) {
+            outRect.top = space;
         }
     }
 }
