@@ -162,7 +162,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
-    private List<Note> notes;
+    private List<Note> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -175,12 +175,12 @@ public class MainActivity extends AppCompatActivity {
         // Добавляем отступы вокруг элементов
         recyclerView.addItemDecoration(new SpacingItemDecorator(16));
 
-        notes = new ArrayList<>();
+        noteList = new ArrayList<>();
         // Пример заполнения данными
-        notes.add(new Note("first note", "contents of the first note"));
-        notes.add(new Note("second note", "contents of the second note"));
+        noteList.add(new Note(1,"Первая заметка", "Содержание первой заметки"));
+        noteList.add(new Note(2,"Вторая заметка", "Содержание второй заметки"));
 
-        adapter = new NoteAdapter(notes);
+        adapter = new NoteAdapter(noteList);
         recyclerView.setAdapter(adapter);
     }
 }
