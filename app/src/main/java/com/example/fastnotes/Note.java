@@ -5,8 +5,6 @@ public class Note {
     private String title;
     private String content;
 
-    public Note(String перваяЗаметка, String содержаниеПервойЗаметки) {}
-
     public Note(long id, String title, String content) {
         this.id = id;// homework 14
         this.title = title;
