@@ -11,7 +11,6 @@ public class EditNoteActivity extends AppCompatActivity {
 
     private EditText etTitle, etContent;
     private Button btnSave;
-    private long noteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,31 +22,29 @@ public class EditNoteActivity extends AppCompatActivity {
         btnSave = findViewById(R.id.btnSave);
 
         // Получаем переданные данные
-        Intent intent = getIntent();
-        noteId = getIntent().getLongExtra("NOTE_ID", -1);
+        long id = getIntent().getLongExtra("NOTE_ID", -1);
         String title = getIntent().getStringExtra("NOTE_TITLE");
         String content = getIntent().getStringExtra("NOTE_CONTENT");
-        if (noteId != -1) {
-            etTitle.setText(title);
-            etContent.setText(content);
-        }
+
         // Заполняем поля, если данные есть
         if (title != null) etTitle.setText(title);
         if (content != null) etContent.setText(content);
 
-//        btnSave.setOnClickListener(v -> saveNote(noteId));
-        btnSave.setOnClickListener(v -> {
-            String titleText = etTitle.getText().toString();
-            String contentText = etContent.getText().toString();
+        btnSave.setOnClickListener(v -> saveNote(id));
+    }
 
-            Intent resultIntent = new Intent();
-            resultIntent.putExtra("note_id", noteId == -1 ? System.currentTimeMillis() : noteId);
-            resultIntent.putExtra("note_title", titleText);
-            resultIntent.putExtra("note_content", contentText);
+    private void saveNote(long id) {
+        String title = etTitle.getText().toString();
+        String content = etContent.getText().toString();
 
-            setResult(RESULT_OK, resultIntent);
-            finish();
-        });
+        Intent resultIntent = new Intent();
+        resultIntent.putExtra("NOTE_ID", id == -1 ? System.currentTimeMillis() : id);
+        resultIntent.putExtra("NOTE_TITLE", title);
+        resultIntent.putExtra("NOTE_CONTENT", content);
+
+        setResult(RESULT_OK, resultIntent);
+        finish();
+    }
     }
 
 //    private void saveNote(long noteId) {
@@ -62,4 +59,4 @@ public class EditNoteActivity extends AppCompatActivity {
 //        setResult(RESULT_OK, resultIntent);
 //        finish();
 //    }
-}
+

@@ -1,36 +1,23 @@
 package com.example.fastnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.PopupMenu;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Bundle;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.view.ContextMenu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import java.util.Map;
 
 public class MainActivity2 extends AppCompatActivity {
     private RecyclerView recyclerView;
-    private NoteAdapter adapter;
-    private List<Note> notes;
+    private NoteAdapter2 adapter;
+    private List<Note> notes = new ArrayList<>();
+    private FloatingActionButton fabAdd;
 
-    //Homework #14
-    private ListView listNotes;
-    private Button btnAdd;
-
-
-    private static final String PREF_NAME = "notes_pref";
-    private SharedPreferences prefs;
-
+    private static final int REQUEST_CODE_EDIT = 1;
+    private static final int REQUEST_CODE_ADD = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,108 +25,83 @@ public class MainActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_main2);
 
         recyclerView = findViewById(R.id.recyclerView);
+        fabAdd = findViewById(R.id.fabAdd);
+
+        setupRecyclerView();
+        setupFab();
+    }
+
+    private void setupRecyclerView() {
+        adapter = new NoteAdapter2(
+                notes,
+                note -> {
+                    // Переход к редактированию заметки
+                    Intent intent = new Intent(this, EditNoteActivity.class);
+                    intent.putExtra("NOTE_ID", note.getId());
+                    intent.putExtra("NOTE_TITLE", note.getTitle());
+                    intent.putExtra("NOTE_CONTENT", note.getContent());
+                    startActivityForResult(intent, REQUEST_CODE_EDIT);
+                },
+                note -> {
+                    // Показ контекстного меню при долгом нажатии
+                    showContextMenu(note);
+                    return true;
+                }
+        );
+
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+    }
 
-        // Добавляем отступы вокруг элементов
-        recyclerView.addItemDecoration(new SpacingItemDecorator(16));
-
-        prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-
-        listNotes = findViewById(R.id.list_notes);
-        btnAdd = findViewById(R.id.btn_add);
-
-        notes = new ArrayList<>();
-        adapter = new NoteAdapter(this, notes);
-        listNotes.setAdapter((ListAdapter) adapter);
-
-        // Загрузка заметок (в примере — заглушка)
-        loadNotes();
-
-        // Переход к созданию новой заметки
-        btnAdd.setOnClickListener(v -> {
+    private void setupFab() {
+        fabAdd.setOnClickListener(v -> {
+            // Переход к созданию новой заметки
             Intent intent = new Intent(this, EditNoteActivity.class);
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, REQUEST_CODE_ADD);
+        });
+    }
+
+    // Показ контекстного меню
+    private void showContextMenu(Note note) {
+        PopupMenu popup = new PopupMenu(this, recyclerView);
+        popup.inflate(R.menu.context_menu);
+
+        popup.setOnMenuItemClickListener(item -> {
+            if (item.getItemId() == R.id.action_edit) {
+                Intent editIntent = new Intent(this, EditNoteActivity.class);
+                editIntent.putExtra("NOTE_ID", note.getId());
+                editIntent.putExtra("NOTE_TITLE", note.getTitle());
+                editIntent.putExtra("NOTE_CONTENT", note.getContent());
+                startActivityForResult(editIntent, REQUEST_CODE_EDIT);
+                return true;
+            } else if (item.getItemId() == R.id.action_delete) {
+                notes.remove(note);
+                adapter.notifyDataSetChanged();
+                return true;
+            }
+            return false;
         });
 
-        // Контекстное меню для списка
-        registerForContextMenu(listNotes);
+        popup.show();
     }
 
-    private void loadNotes() {
-        // Здесь должна быть загрузка из БД/SharedPreferences
-        notes.add(new Note(1, "First note", "First note text"));
-        adapter.notifyDataSetChanged();
-
-        notes.clear();
-        Map<String, ?> allEntries = prefs.getAll();
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            String key = entry.getKey();
-            if (key.startsWith("note_")) {
-                String[] parts = key.split("_", 3);
-                if (parts.length == 3) {
-                    long id = Long.parseLong(parts[1]);
-                    String title = prefs.getString("note_" + id + "_title", "");
-                    String content = prefs.getString("note_" + id + "_content", "");
-                    notes.add(new Note(id, title, content));
-                }
-            }
-        }
-        adapter.notifyDataSetChanged();
-    }
-
-    private void saveNote(Note note) {
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putString("note_" + note.getId() + "_title", note.getTitle());
-        editor.putString("note_" + note.getId() + "_content", note.getContent());
-        editor.apply();
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-        super.onCreateContextMenu(menu, v, menuInfo);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.context_menu, menu);
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        AdapterView.AdapterContextMenuInfo info =
-                (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        int position = info.position;
-        Note note = notes.get(position);
-
-        if (item.getItemId() == R.id.menu_edit) {
-            Intent intent = new Intent(this, EditNoteActivity.class);
-            intent.putExtra("note_id", note.getId());
-            intent.putExtra("note_title", note.getTitle());
-            intent.putExtra("note_content", note.getContent());
-            startActivityForResult(intent, 1);
-            return true;
-        } else if (item.getItemId() == R.id.menu_delete) {
-            notes.remove(position);
-            adapter.notifyDataSetChanged();
-            return true;
-        }
-        return super.onContextItemSelected(item);
-    }
-
+    // Обработка результата от EditNoteActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK && requestCode == 1) {
-            long id = data.getLongExtra("note_id", -1);
-            String title = data.getStringExtra("note_title");
-            String content = data.getStringExtra("note_content");
+
+        if (resultCode == RESULT_OK && data != null) {
+            long id = data.getLongExtra("NOTE_ID", -1);
+            String title = data.getStringExtra("NOTE_TITLE");
+            String content = data.getStringExtra("NOTE_CONTENT");
 
             Note note = new Note(id, title, content);
-            saveNote(note);
 
-            // Если заметка новая — добавляем в список
-            if (id == -1) {
-                note.setId(System.currentTimeMillis()); // используем timestamp как ID
+            if (requestCode == REQUEST_CODE_ADD) {
+                // Добавляем новую заметку
                 notes.add(note);
-            } else {
-                // Если заметка существующая — обновляем
+            } else if (requestCode == REQUEST_CODE_EDIT) {
+                // Обновляем существующую заметку
                 for (int i = 0; i < notes.size(); i++) {
                     if (notes.get(i).getId() == id) {
                         notes.set(i, note);
@@ -147,8 +109,6 @@ public class MainActivity2 extends AppCompatActivity {
                     }
                 }
             }
-            // Обновление списка после сохранения заметки
-            loadNotes(); // или более умная логика обновления
             adapter.notifyDataSetChanged();
         }
     }
