@@ -3,4 +3,5 @@
     <item name="menu_edit" type="id">Menu edit</item>
     <item name="menu_delete" type="id">Menu delete</item>
     <item name="recyclerView" type="id">Recycler view</item>
+    <item name="listView" type="id">List View</item>
 </resources>
