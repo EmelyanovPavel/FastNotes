@@ -2,10 +2,13 @@ package com.example.fastnotes;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class EditNoteActivity extends AppCompatActivity {
 
@@ -44,19 +47,15 @@ public class EditNoteActivity extends AppCompatActivity {
 
         setResult(RESULT_OK, resultIntent);
         finish();
-    }
-    }
 
-//    private void saveNote(long noteId) {
-//        String title = etTitle.getText().toString();
-//        String content = etContent.getText().toString();
-//
-//        Intent resultIntent = new Intent();
-//        resultIntent.putExtra("NOTE_ID", noteId == -1 ? System.currentTimeMillis() : noteId);
-//        resultIntent.putExtra("NOTE_TITLE", title);
-//        resultIntent.putExtra("NOTE_CONTENT", content);
-//
-//        setResult(RESULT_OK, resultIntent);
-//        finish();
-//    }
+        //Homework #15
+        SharedPreferences prefs = getSharedPreferences("notes", MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
 
+        String noteText = etContent.getText().toString();
+        Set<String> savedNotes = prefs.getStringSet("notes_list", new HashSet<>());
+        savedNotes.add(noteText);
+        editor.putStringSet("notes_list", savedNotes);
+        editor.apply();
+    }
+}
