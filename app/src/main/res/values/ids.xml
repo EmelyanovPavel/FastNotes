@@ -4,4 +4,6 @@
     <item name="menu_delete" type="id">Menu delete</item>
     <item name="recyclerView" type="id">Recycler view</item>
     <item name="listView" type="id">List View</item>
+<!--    Homework #17-->
+    <item name="btn_show_notification" type="id">Show notifications</item>
 </resources>
