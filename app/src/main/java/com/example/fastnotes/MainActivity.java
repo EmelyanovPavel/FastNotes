@@ -155,6 +155,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
+
+import com.example.fastnotes.data.model.Note;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -162,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private NoteAdapter adapter;
-    private List<Note> noteList;
+    private List<Note2> noteList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
 
         noteList = new ArrayList<>();
         // Пример заполнения данными
-        noteList.add(new Note(1,"Первая заметка", "Содержание первой заметки"));
-        noteList.add(new Note(2,"Вторая заметка", "Содержание второй заметки"));
+        noteList.add(new Note2("Первая заметка", "Содержание первой заметки"));
+        noteList.add(new Note2("Вторая заметка", "Содержание второй заметки"));
 
         adapter = new NoteAdapter(noteList);
         recyclerView.setAdapter(adapter);
