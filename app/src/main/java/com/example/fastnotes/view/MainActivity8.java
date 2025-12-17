@@ -4,17 +4,14 @@ import android.app.AlertDialog;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.example.fastnotes.NotesView;
 import com.example.fastnotes.R;
 import com.example.fastnotes.adapter.NoteAdapter4;
 import com.example.fastnotes.data.model.Note;
 import com.example.fastnotes.presenter.NotesPresenter;
-
 import java.util.List;
 
 ////MVP
