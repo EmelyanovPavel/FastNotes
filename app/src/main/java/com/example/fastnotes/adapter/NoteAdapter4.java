@@ -9,7 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.example.fastnotes.R;
 import com.example.fastnotes.data.model.Note;
-import com.example.fastnotes.view.MainActivity6;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class NoteAdapter4 extends RecyclerView.Adapter<NoteAdapter4.NoteViewHold
         void onDeleteClick(Note note);
     }
 
-    public NoteAdapter4(MainActivity6 mainActivity) {
+    public NoteAdapter4() {
         this.context = context;
         this.listener = listener;
     }
@@ -42,8 +43,8 @@ public class NoteAdapter4 extends RecyclerView.Adapter<NoteAdapter4.NoteViewHold
         holder.tvTitle.setText(current.getTitle());
         holder.tvContent.setText(current.getContent());
 
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
-//        holder.tvDate.setText(sdf.format(current.getDate()));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        holder.tvDate.setText(sdf.format(current.getDate()));
 
 
         holder.itemView.setOnClickListener(v -> listener.onNoteClick(current));

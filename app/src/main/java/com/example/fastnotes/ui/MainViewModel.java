@@ -4,16 +4,16 @@ import android.app.Application;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import com.example.fastnotes.data.model.Note;
-import com.example.fastnotes.data.repository.NotesRepository;
+import com.example.fastnotes.data.repository.NotesRepository2;
 import java.util.List;
 
 public class MainViewModel extends AndroidViewModel {
-    private final NotesRepository repository;
+    private final NotesRepository2 repository;
     private final LiveData<List<Note>> allNotes;
 
     public MainViewModel(Application application) {
         super(application);
-        repository = new NotesRepository(application);
+        repository = new NotesRepository2(application);
         allNotes = repository.getAllNotes();
     }
 
