@@ -38,6 +38,8 @@ dependencies {
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
+    implementation(libs.room.common.jvm)
+    implementation(libs.room.runtime)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
@@ -56,5 +58,21 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
-    implementation("com.google.android.material:material:1.11.0") //homework #16
+    implementation("com.google.android.material:material:1.11.0")
+    annotationProcessor(libs.room.compiler) //homework #16
+
+    //Homework #18
+    // ViewModel и LiveData
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.6.2")
+
+    // Room для БД
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+    // CardView (для оформления заметок)
+    implementation("androidx.cardview:cardview:1.0.0")
 }
