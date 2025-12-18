@@ -27,6 +27,14 @@ public class NotesRepository2 {
         new InsertNoteAsyncTask(noteDao).execute(note);
     }
 
+    public void update(Note note) {
+        new InsertNoteAsyncTask(noteDao).execute(note);
+    }
+
+    public void delete(Note note) {
+        new InsertNoteAsyncTask(noteDao).execute(note);
+    }
+
     // AsyncTask для фоновой работы
     private static class InsertNoteAsyncTask extends AsyncTask<Note, Void, Void> {
         private NoteDao asyncTaskDao;
