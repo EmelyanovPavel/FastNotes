@@ -22,14 +22,12 @@ public class NoteAdapter5 extends RecyclerView.Adapter<NoteAdapter5.ViewHolder> 
         this.context = context;
         this.notes = notes;
     }
-
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_note, parent, false);
+                .inflate(R.layout.item_note4, parent, false);
         return new ViewHolder(view);
     }
-
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Note3 note = notes.get(position);
@@ -40,7 +38,6 @@ public class NoteAdapter5 extends RecyclerView.Adapter<NoteAdapter5.ViewHolder> 
         Animation animation = AnimationUtils.loadAnimation(context, R.anim.fade_in);
         holder.itemContainer.startAnimation(animation);
     }
-
     @Override
     public int getItemCount() {
         return 0;
