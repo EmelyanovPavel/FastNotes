@@ -1,10 +1,8 @@
 package com.example.fastnotes.data.repository;
 
 import android.content.Context;
-
 import com.example.fastnotes.data.database.NotesDatabase;
 import com.example.fastnotes.data.model.Note;
-
 import java.util.List;
 
 public class NotesRepository {
