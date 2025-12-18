@@ -16,7 +16,7 @@ public class Note {
     private long date; //homework 18
 
 
-    public Note(long id, String title, String content) {
+    public Note(long id, String title, String content, long date) {
         this.id = id;// homework 14
         this.title = title;
         this.content = content;
